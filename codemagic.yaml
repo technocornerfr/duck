@@ -1,0 +1,19 @@
+workflows:
+  build:
+    name: Build iOS App
+    environment:
+      xcode: latest
+      node: latest
+    scripts:
+      - name: Install dependencies
+        script: |
+          # Installez les dépendances si vous utilisez CocoaPods
+          pod install
+      - name: Build iOS App
+        script: |
+          xcodebuild -workspace technocorner.xcworkspace -scheme technocorner -sdk iphoneos -configuration Release archive -archivePath $HOME/technocorner.xcarchive
+      - name: Export IPA
+        script: |
+          xcodebuild -exportArchive -archivePath $HOME/technocorner.xcarchive -exportOptionsPlist ExportOptions.plist -exportPath $HOME/technocorner.ipa
+    artifacts:
+      - $HOME/technocorner.ipa
